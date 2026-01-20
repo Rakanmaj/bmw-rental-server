@@ -6,6 +6,9 @@ import pgclient from "./db.js";
 // AUTH ROUTES
 import authRoutes from "./routes/authRoutes.js";
 
+// CARS ROUTES
+import carsRoutes from "./routes/carsRoutes.js";
+
 dotenv.config();
 
 const app = express();
@@ -27,8 +30,9 @@ app.get("/test", (req, res) => {
   });
 });
 
-// ================= AUTH ROUTES =================
+// ================= ROUTES =================
 app.use("/api/auth", authRoutes);
+app.use("/api/cars", carsRoutes);
 
 // ================= 404 HANDLER =================
 app.use((req, res) => {
