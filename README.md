@@ -22,17 +22,17 @@ bcryptjs
 
 Getting Started
 
-1️) Install dependencies
+**1️) Install dependencies**
 npm install
 
-2) Environment Variables
+**2) Environment Variables**
 
 Create a .env file in the project root:
 
 PORT=3000
 DATABASE_URL=postgres://postgres:0000@localhost:5433/bmw_rental_system
 
-3)PostgreSQL Database
+**3) PostgreSQL Database**
 
 Make sure PostgreSQL is running and that the database exists:
 
@@ -43,7 +43,7 @@ Your backend connects using:
 
 new pg.Client(process.env.DATABASE_URL);
 
-4️) Start the server
+**4️) Start the server**
 node server.js
 
 
