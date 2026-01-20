@@ -1,5 +1,5 @@
 import express from "express";
-import pgclient from "../middlewares/db.js";
+import pgclient from "../db.js";
 import { requireAuth, requireAdmin } from "../middlewares/authMiddleware.js";
 
 const reservationsRoutes = express.Router();
