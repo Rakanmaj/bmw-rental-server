@@ -3,6 +3,9 @@ import dotenv from "dotenv";
 import cors from "cors";
 import pgclient from "./db.js";
 
+// AUTH ROUTES
+import authRoutes from "./routes/authRoutes.js";
+
 dotenv.config();
 
 const app = express();
@@ -14,7 +17,7 @@ app.use(express.json());
 
 // ================= TEST ROUTES =================
 app.get("/", (req, res) => {
-  res.send("BMW Rental Backend is running ✅");
+  res.send("BMW Rental Backend is running ");
 });
 
 app.get("/test", (req, res) => {
@@ -23,6 +26,9 @@ app.get("/test", (req, res) => {
     message: "API test successful",
   });
 });
+
+// ================= AUTH ROUTES =================
+app.use("/api/auth", authRoutes);
 
 // ================= 404 HANDLER =================
 app.use((req, res) => {
@@ -33,13 +39,13 @@ app.use((req, res) => {
 pgclient
   .connect()
   .then(() => {
-    console.log("Database connected ✅");
+    console.log("Database connected ");
 
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
   })
   .catch((err) => {
-    console.error("Database connection failed ❌");
+    console.error("Database connection failed ");
     console.error(err);
   });
