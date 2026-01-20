@@ -1,102 +1,122 @@
-# bmw-rental-server
+# 🚗 BMW Rental Backend (Express + PostgreSQL)
 
-BMW Rental Backend (Express + PostgreSQL)
+This repository contains the backend server for the **BMW Rental System**, a full-stack web application that allows users to browse BMW cars, rent vehicles online, and manage reservations. Administrators can monitor, approve, or reject booking requests.
 
-This repository contains the backend server for the BMW Rental System, a full-stack web application that allows customers to rent BMW vehicles online and enables administrators to manage reservations efficiently.
+---
 
-Tech Stack
+## 📌 Application Overview
 
-Node.js
+**BMW Rental System** is designed to provide a smooth and secure car rental experience.
 
-Express.js
+### Customers can:
+- Browse available BMW vehicles
+- Create rental reservations
+- Update or cancel pending bookings
+- View reservation history
 
-PostgreSQL
+### Administrators can:
+- View all reservations
+- Approve or reject bookings
+- Add administrative notes
+- Monitor system activity
 
-pg
+---
 
-dotenv
+## 🏗️ Tech Stack
 
-cors
+- **Node.js**
+- **Express.js**
+- **PostgreSQL**
+- **pg**
+- **dotenv**
+- **cors**
+- **bcryptjs**
 
-bcryptjs
+---
 
-Getting Started
+## 🚀 Getting Started
 
-**1️) Install dependencies**
+### 1️⃣ Install dependencies
+
+```bash
 npm install
-
-**2) Environment Variables**
-
+2️)  Environment Variables
 Create a .env file in the project root:
 
+env
+Copy code
 PORT=3000
 DATABASE_URL=postgres://postgres:0000@localhost:5433/bmw_rental_system
+3️)  Database Setup
+Ensure PostgreSQL is running and create the database:
 
-**3) PostgreSQL Database**
-
-Make sure PostgreSQL is running and that the database exists:
-
+sql
+Copy code
 CREATE DATABASE bmw_rental_system;
+The application connects using:
 
-
-Your backend connects using:
-
+js
+Copy code
 new pg.Client(process.env.DATABASE_URL);
-
-**4️) Start the server**
+4️)  Start the Server
+bash
+Copy code
 node server.js
+If successful, you will see:
 
-
-If successful, you should see:
-
+pgsql
+Copy code
 Database connected
 Server listening on PORT 3000
-
-
- Project Structure
+📁 Project Structure
+text
+Copy code
 BMW-RENTAL-SERVER/
 ├── routes/
-│   ├── authRoutes.js
-│   ├── carsRoutes.js
-│   └── reservationsRoutes.js
+│   ├── authRoutes.js            # User signup & login
+│   ├── carsRoutes.js            # BMW cars endpoints
+│   └── reservationsRoutes.js    # Reservations logic
 │
 ├── middlewares/
-│   ├── authMiddleware.js
+│   ├── authMiddleware.js        # Authentication & admin guard
 │   └── db.js
 │
-├── db.js
-├── server.js
+├── db.js                        # PostgreSQL client
+├── server.js                    # App entry point
 ├── package.json
 ├── package-lock.json
 ├── .env
 └── README.md
-
-
- Base URL
+  Base URL
+arduino
+Copy code
 http://localhost:3000
-
  Authentication System
-
 This backend uses header-based authentication.
 
 Required Headers
 Header	Description
 x-user-id	Logged-in user ID
-x-user-role	Must be admin for admin endpoints
-Example Headers
+x-user-role	Required for admin routes
+
+Example
+pgsql
+Copy code
 x-user-id: 5
 x-user-role: admin
-
- Auth Routes
-
+ Authentication Routes
 Base URL
 
+bash
+Copy code
 /api/auth
+Method	Endpoint	Description
+POST	/signup	Register new user
+POST	/login	User login
 
 POST /api/auth/signup
-
-Create a new user account.
-
+json
+Copy code
 {
   "full_name": "Rakan",
   "email": "rakan@example.com",
@@ -104,78 +124,61 @@ Create a new user account.
   "phone": "0790000000",
   "role": "user"
 }
-
-
 Notes:
 
 Passwords are hashed using bcrypt
 
-Role defaults to "user" if not provided
+Role defaults to user if not provided
 
 POST /api/auth/login
-
-Login using email and password.
-
+json
+Copy code
 {
   "email": "rakan@example.com",
   "password": "123456"
 }
+Returns user data excluding the password.
 
-
-Returns user data with the password removed.
-
- Cars API
-
+ Cars Routes
 Base URL
 
+bash
+Copy code
 /api/cars
+Method	Endpoint	Description
+GET	/	Get all cars
+GET	/:id	Get car by ID
 
+Example
+bash
+Copy code
 GET /api/cars
-
-Returns all BMW cars.
-
-GET /api/cars/:id
-
-Returns car details by ID.
-
-If not found:
-
-{ "message": "Car not found" }
-
- Reservations API
-
+GET /api/cars/2
+ Reservations Routes
 Base URL
 
+bash
+Copy code
 /api/reservations
-
-
 Reservation statuses:
 
+nginx
+Copy code
 pending | approved | rejected
-
- User Routes
+ User Endpoints
 GET /api/reservations/user/:userId
-
 Returns reservations for the logged-in user only.
 
-Required header
+Header required:
 
-x-user-id: <same as :userId>
-
-
-Access is denied if the user attempts to view another user’s data.
-
+less
+Copy code
+x-user-id: same as :userId
 POST /api/reservations
-
 Create a reservation.
 
-Headers
-
-x-user-id: USER_ID
-
-
-Body
-
+json
+Copy code
 {
   "user_id": 5,
   "car_id": 2,
@@ -185,64 +188,34 @@ Body
   "return_time": "12:00",
   "total_price": 240
 }
+Reservation is created with:
 
-
-Created with:
-
-status = "pending"
-
-admin_note = ""
-
+vbnet
+Copy code
+status: pending
+admin_note: ""
 PUT /api/reservations/user/:id
-
-Update reservation schedule.
-
-Rules:
-
-User must own the reservation
-
-Status must be pending
+User may update pickup and return times only if status is pending.
 
 DELETE /api/reservations/:id
+Deletes reservation owned by the logged-in user.
 
-Delete a reservation owned by the logged-in user.
-
- Admin Routes
+ Admin Endpoints
 GET /api/reservations
-
 Returns all reservations.
 
-Headers
+Required headers:
 
-x-user-id: 1
+pgsql
+Copy code
+x-user-id: any
 x-user-role: admin
-
 PUT /api/reservations/:id
+Update reservation status and admin note.
 
-Admin can update reservation status and note.
-
+json
+Copy code
 {
   "status": "approved",
-  "admin_note": "Please arrive 10 minutes early."
+  "admin_note": "Please arrive 15 minutes early."
 }
-
- Target Users
-Customers
-
-Browse BMW vehicles
-
-Create and manage reservations
-
-Modify pending bookings
-
-View booking history
-
-Administrators
-
-View all reservations
-
-Approve or reject bookings
-
-Add administrative notes
-
-Monitor rental operations
