@@ -52,6 +52,7 @@ If successful, you should see:
 Database connected
 Server listening on PORT 3000
 
+
  Project Structure
 BMW-RENTAL-SERVER/
 ├── routes/
@@ -69,6 +70,7 @@ BMW-RENTAL-SERVER/
 ├── package-lock.json
 ├── .env
 └── README.md
+
 
  Base URL
 http://localhost:3000
