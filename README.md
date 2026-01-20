@@ -32,7 +32,7 @@ Create a .env file in the project root:
 PORT=3000
 DATABASE_URL=postgres://postgres:0000@localhost:5433/bmw_rental_system
 
-3) PostgreSQL Database
+3)PostgreSQL Database
 
 Make sure PostgreSQL is running and that the database exists:
 
